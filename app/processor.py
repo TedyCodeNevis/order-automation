@@ -8,7 +8,7 @@ import logging
 setup_logging()
 logger=logging.getLogger(__name__)
 
-class statusOrder(str,Enum):
+class OrderStatus(str,Enum):
     PROCESSING="processing"
     PENDING="pending"
     COMPLETED="completed"
@@ -28,7 +28,7 @@ class Order:
     product_id:int
     quantity:int
     total:Decimal
-    status:statusOrder
+    status:OrderStatus
     date:date_gh
 
 REQUIRED_FIELDS=(
@@ -67,7 +67,7 @@ def clean_order(raw_order:dict) -> Order:
         )
     
     try:
-        status=statusOrder(raw_order["status"])
+        status=OrderStatus(raw_order["status"])
     except ValueError as error:
         raise InvalidOrderError(
             f"Order {order_id} has invalid status: {raw_order['status']}"
