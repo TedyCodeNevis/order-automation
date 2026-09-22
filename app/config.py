@@ -1,16 +1,26 @@
-import os
-from dotenv import load_dotenv
+# app/config.py
 
-load_dotenv()
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
-def require_env(name=str) -> str:
-    value=os.getenv(name)
-    if not value:
-        raise RuntimeError(f"Missing environment variable: {name}")
-    return value
 
-PANEL_URL=require_env("PANEL_URL")
-PANEL_USERNAME=require_env("PANEL_USERNAME")
-PANEL_PASSWORD=require_env("PANEL_PASSWORD")
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
 
-LOG_LEVEL=require_env("LOG_LEVEL")
+    # Panel
+    PANEL_URL: str = ""
+    PANEL_USERNAME: str = ""
+    PANEL_PASSWORD: str = ""
+
+    # Telegram
+    BOT_TOKEN: str
+    CHAT_ID: str
+
+    # General
+    LOG_LEVEL: str = "INFO"
+
+
+settings = Settings()
