@@ -44,7 +44,7 @@ def format_orders_summary(orders:list[Order]) -> str:
         order_list.append(
             f"#{order.id} - {order.customer} - "
             f"{order.product} * {order.quantity} - "
-            f"{order.total:,.2f} - {STATUS_LABel.get(order.status,order.status.value)}"
+            f"{order.total:,.2f} - {STATUS_LABEL.get(order.status,order.status.value)}"
         )
     return "\n".join(order_list)
 
