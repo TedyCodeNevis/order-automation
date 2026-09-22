@@ -1,6 +1,6 @@
 import httpx , asyncio, logging
 from app.logger import setup_logging
-from app.config import PANEL_USERNAME,PANEL_PASSWORD
+from app.config import settings
 
 class APIClient:
     RETRY_STATUS_CODE={
@@ -30,8 +30,8 @@ class APIClient:
         response=await self.client.post(
             f"{self.base_url}/login",
             json={
-                "username":PANEL_USERNAME,
-                "password":PANEL_PASSWORD,})
+                "username":settings.PANEL_USERNAME,
+                "password":settings.PANEL_PASSWORD,})
         response.raise_for_status()
         data=response.json()
         self._token=data.get("token")
