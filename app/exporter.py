@@ -1,4 +1,4 @@
-from processor import Order,OrderStatus
+from app.processor import Order,OrderStatus
 
 STATUS_EMOJI={
     OrderStatus.PROCESSING:"🕐",
@@ -29,9 +29,9 @@ def format_order(order:Order) -> str:
         f"ایمیل مشتری: {order.customer_email}\n"
         f"محصول: {order.product} (تعداد: {order.quantity})\n"
         f"مجموع قیمت: {order.total:,.2f}\n"
-        f"وضعیت: {order_label}\n",
-        f"تاریخ سفارش: {order.date.isoformat()}\n",
-        f"آدرس: {order.shipping_address}\n",
+        f"وضعیت: {order_label}\n"
+        f"تاریخ سفارش: {order.date.isoformat()}\n"
+        f"آدرس: {order.shipping_address}\n"
     )
 
 def format_orders_summary(orders:list[Order]) -> str:

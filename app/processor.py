@@ -80,7 +80,7 @@ def clean_order(raw_order:dict) -> Order:
         )
     
     email=raw_order["customer_email"].strip()
-    if not email.endswith("@gmail.com"):
+    if not "@" in email:
         raise InvalidOrderError(f"Order {order_id} has invalid email: {email}")
 
     if total < 0:

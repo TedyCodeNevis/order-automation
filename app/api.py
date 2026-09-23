@@ -26,7 +26,8 @@ class APIClient:
 
         self.client=httpx.AsyncClient(timeout=timeout)
         self._token:str | None=None
-    async def autherticate(self):
+
+    async def authenticate(self):
         response=await self.client.post(
             f"{self.base_url}/login",
             json={
@@ -42,7 +43,7 @@ class APIClient:
 
     async def get(self,endpoint:str) -> dict|list:
         url=f"{self.base_url}/{endpoint.lstrip("/")}"
-        for attept in range(1,self.retry_delay):
+        for attept in range(1,self.retry_count+1):
             try:
                 response=await self.client.get(url)
                 response.raise_for_status()
@@ -53,22 +54,22 @@ class APIClient:
                     self.logger.info(f"none-retryble HTTP error {status_code} on {url}")
                     raise
                 self.logger.warning(
-                    f"Retryble HTTP error {status_code} on {url}",
+                    f"Retryble HTTP error {status_code} on {url}"
                     f"attempt {attept}/{self.retry_count}")
                 if attept == self.retry_count:
                     raise
                 delay=2**attept
-                asyncio.sleep(self.retry_delay+delay)
+                await asyncio.sleep(self.retry_delay+delay)
 
 
     async def get_orders_api(self) -> list|dict:
-            return self.get("api/orders")
+        return await self.get("api/orders")
     async def get_order_api(self,order_id:int):
-            return self.get(f"api/orders/{order_id}")
+        return await self.get(f"api/orders/{order_id}")
     async def get_orders(self) -> list|dict:
-        return self.get("orders")
+        return await self.get("orders")
     async def get_order(self,order_id:int):
-        return self.get(f"orders/{order_id}")
+        return await self.get(f"orders/{order_id}")
     async def close(self):
         await self.client.aclose()
     async def __aenter__(self):
