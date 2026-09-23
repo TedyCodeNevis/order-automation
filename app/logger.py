@@ -1,14 +1,14 @@
 import logging
 
-from config import LOG_LEVEL
+from app.config import settings
 
-logger_text = LOG_LEVEL
+logger_text = settings.LOG_LEVEL
 
 def setup_logging():
 
     logger_level = getattr(
         logging,
-        LOG_LEVEL.upper(),
+        settings.LOG_LEVEL.upper(),
         logging.INFO
     )
 
