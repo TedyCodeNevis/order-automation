@@ -60,9 +60,14 @@ class APIClient:
                 delay=2**attept
                 asyncio.sleep(self.retry_delay+delay)
 
+
+    async def get_orders_api(self) -> list|dict:
+            return self.get("api/orders")
+    async def get_order_api(self,order_id:int):
+            return self.get(f"api/orders/{order_id}")
     async def get_orders(self) -> list|dict:
         return self.get("orders")
-    async def close(self,order_id:int):
+    async def get_order(self,order_id:int):
         return self.get(f"orders/{order_id}")
     async def close(self):
         await self.client.aclose()

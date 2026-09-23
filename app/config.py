@@ -10,6 +10,9 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
+    #Base url
+    BASE_URL: str = ""
+
     # Panel
     PANEL_URL: str = ""
     PANEL_USERNAME: str = ""
