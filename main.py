@@ -2,7 +2,7 @@ from app.logger import setup_logging
 from app.notifications.telegram import TelegramNotifier
 from app.api import APIClient
 from app.config import settings
-from app.database import get_order_status,mark_order_seen,init_db
+from app.database import upsert_order,init_db,get_order_status
 from app.processor import clean_orders,Order
 from app.exporter import format_order
 import asyncio
@@ -33,7 +33,7 @@ async def main():
         for order in new_or_changed:
             message=format_order(order)
             await notifier.send(message)
-            mark_order_seen(order.id,order.status.value)
+            upsert_order(order)
 
     logger.info("aplication finished successfuly")
 
