@@ -41,11 +41,11 @@ class APIClient:
         self.client.headers["Authorization"]=f"Bearer {self._token}"
         self.logger.info("Authenticated successfully")
 
-    async def get(self,endpoint:str) -> dict|list:
+    async def get(self,endpoint:str,params:dict | None = None) -> dict|list:
         url=f"{self.base_url}/{endpoint.lstrip("/")}"
         for attept in range(1,self.retry_count+1):
             try:
-                response=await self.client.get(url)
+                response=await self.client.get(url,params=params)
                 response.raise_for_status()
                 return response.json()
             except httpx.HTTPStatusError as e:
@@ -63,7 +63,7 @@ class APIClient:
 
 
     async def get_orders_api(self) -> list|dict:
-        return await self.get("api/orders")
+        return await self.get("api/orders",params={"limit":100})
     async def get_order_api(self,order_id:int):
         return await self.get(f"api/orders/{order_id}")
     async def get_orders(self) -> list|dict:
